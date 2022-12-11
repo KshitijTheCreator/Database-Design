@@ -1,0 +1,74 @@
+CREATE DATABASE BankingSystem;
+USE BankingSystem;
+
+CREATE TABLE Employee
+(
+eid INT PRIMARY KEY,
+employee_name VARCHAR(30),
+employee_branch_name VARCHAR(20),
+employee_dependent_name VARCHAR(30),
+employee_years_of_service VARCHAR(30)
+);
+
+CREATE TABLE Customer
+(
+customer_id INT PRIMARY KEY,
+customer_name VARCHAR(30),
+customer_amount INT,
+customer_DOB DATE,
+customer_contact_number LONG,
+foreign_id INT,
+FOREIGN KEY (foreign_id) REFERENCES Employee (eid)
+);
+
+CREATE TABLE Branch
+(
+branch_id INT PRIMARY KEY,
+loan_id_reference INT,
+FOREIGN KEY (loan_id_reference) REFERENCES Loan(loan_id),
+branch_name VARCHAR(25),
+branch_assets INT,
+branch_city VARCHAR(20),
+branch_libilities INT
+);
+
+CREATE TABLE Saving_Account
+(
+ac_num_reference INT,
+FOREIGN KEY(ac_num_reference) REFERENCES Customer_Account (account_number),
+intrest_rate INT,
+daily_withdrawl_limit INT
+);
+
+CREATE TABLE Loan
+(
+loan_number INT PRIMARY KEY,
+loan_id INT,
+FOREIGN KEY(loan_id) REFERENCES Customer(customer_id),
+loan_amount INT
+);
+
+CREATE TABLE Current_Account
+(
+ac_num_reference INT,
+FOREIGN KEY(ac_num_reference) REFERENCES Customer_Account (account_number), 
+per_transaction_charges DOUBLE PRIMARY KEY,
+over_draft_amount INT
+);
+
+CREATE TABLE Payment
+(
+loan_num_reference INT,
+FOREIGN KEY (loan_num_reference) REFERENCES Loan (loan_number),
+payment_number INT PRIMARY KEY,
+payment_amount DOUBLE,
+payment_date DATE
+);
+
+CREATE TABLE Customer_Account
+(
+account_number INT PRIMARY KEY,
+customer_id_reference INT,
+FOREIGN KEY(customer_id_reference) REFERENCES Customer(customer_id),
+balance INT
+);
